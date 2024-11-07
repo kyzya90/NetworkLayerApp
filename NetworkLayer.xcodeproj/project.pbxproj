@@ -20,6 +20,7 @@
 		41128A782CDCD3F000AA0B2E /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41128A772CDCD3F000AA0B2E /* Header.swift */; };
 		41128A7A2CDCD42D00AA0B2E /* Body.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41128A792CDCD42D00AA0B2E /* Body.swift */; };
 		41128A7C2CDCD64E00AA0B2E /* NetworkLayerScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41128A7B2CDCD64E00AA0B2E /* NetworkLayerScreenModel.swift */; };
+		41128A812CDD241000AA0B2E /* Publishers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41128A7F2CDD241000AA0B2E /* Publishers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		41128A772CDCD3F000AA0B2E /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		41128A792CDCD42D00AA0B2E /* Body.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Body.swift; sourceTree = "<group>"; };
 		41128A7B2CDCD64E00AA0B2E /* NetworkLayerScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayerScreenModel.swift; sourceTree = "<group>"; };
+		41128A7F2CDD241000AA0B2E /* Publishers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Publishers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 		41128A3B2CDCC08000AA0B2E /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
+				41128A802CDD241000AA0B2E /* Extensions */,
 				41128A732CDCCFEF00AA0B2E /* ViewModels */,
 				41128A672CDCC0E000AA0B2E /* Models */,
 				41128A6A2CDCC0E000AA0B2E /* Services */,
@@ -177,6 +180,14 @@
 				41128A722CDCCFEF00AA0B2E /* NetworkLayerViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		41128A802CDD241000AA0B2E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				41128A7F2CDD241000AA0B2E /* Publishers.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,6 +323,7 @@
 				41128A7C2CDCD64E00AA0B2E /* NetworkLayerScreenModel.swift in Sources */,
 				41128A6B2CDCC0E000AA0B2E /* ContentView.swift in Sources */,
 				41128A7A2CDCD42D00AA0B2E /* Body.swift in Sources */,
+				41128A812CDD241000AA0B2E /* Publishers.swift in Sources */,
 				41128A762CDCD2B000AA0B2E /* MainScreenNetworkService.swift in Sources */,
 				41128A742CDCCFEF00AA0B2E /* NetworkLayerViewModel.swift in Sources */,
 				41128A6D2CDCC0F000AA0B2E /* NetworkService.swift in Sources */,

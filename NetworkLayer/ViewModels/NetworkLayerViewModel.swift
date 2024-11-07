@@ -44,18 +44,15 @@ class NetworkLayerViewModel: NetworkLayerViewModelType {
         let zip = Publishers.Zip(header, body)
         zip
             .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
+            .sink { result in
+                switch result {
+                case .success(let items):
+                    self.state = .loaded(NetworkLayerScreenModel(header: items.0,
+                                                                 body: items.1))
                 case .failure(let error):
                     self.state = .failed
-                    break
-                case .finished:
-                    self.state = .noContent
-                    break
                 }
-            } receiveValue: { value in
-                let model = NetworkLayerScreenModel(header: value.0, body: value.1)
-                self.state = .loaded(model)
             }.store(in: &cancelBag)
+
     }
 }
