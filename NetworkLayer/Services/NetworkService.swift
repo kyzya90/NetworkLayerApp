@@ -5,10 +5,12 @@ import UIKit
 enum NetworkError: Error {
     case invalidUrl
     case unknown
+    case invalidStatusCode
 }
 
 protocol NetworkServiceType {
     func response<T: Decodable>(for request: URLRequest) async throws -> T
+    func responsePublisher<T: Decodable>(for requrest: URLRequest) -> AnyPublisher<T, NetworkError>
     func image(with url: URL) async throws -> UIImage
 }
 
@@ -36,5 +38,26 @@ final class NetworkService: NetworkServiceType {
 
     func image(with url: URL) async throws -> UIImage {
         return UIImage()
+    }
+
+    func responsePublisher<T: Decodable>(for requrest: URLRequest) -> AnyPublisher<T, NetworkError> {
+        return urlSession.dataTaskPublisher(for: requrest)
+            .tryMap { (data: Data, response: URLResponse) in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      200...299 ~= httpResponse.statusCode
+                else {
+                    throw NetworkError.invalidStatusCode
+                }
+
+                return data
+            }.decode(type: T.self, decoder: decoder)
+            .mapError { error in
+                if let networkError = error as? NetworkError {
+                    return networkError
+                } else {
+                    return NetworkError.unknown
+                }
+            }
+            .eraseToAnyPublisher()
     }
 }
