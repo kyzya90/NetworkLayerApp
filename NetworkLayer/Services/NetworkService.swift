@@ -30,6 +30,11 @@ final class NetworkService: NetworkServiceType {
     func response<T>(for request: URLRequest) async throws -> T where T : Decodable {
         do {
             let task = try await urlSession.data(for: request)
+
+            if let error = statusCodeHasError(response: task.1) {
+                throw error
+            }
+
             return try decoder.decode(T.self, from: task.0)
         } catch {
             throw NetworkError.unknown
@@ -43,10 +48,8 @@ final class NetworkService: NetworkServiceType {
     func responsePublisher<T: Decodable>(for requrest: URLRequest) -> AnyPublisher<T, NetworkError> {
         return urlSession.dataTaskPublisher(for: requrest)
             .tryMap { (data: Data, response: URLResponse) in
-                guard let httpResponse = response as? HTTPURLResponse,
-                      200...299 ~= httpResponse.statusCode
-                else {
-                    throw NetworkError.invalidStatusCode
+                if let error = self.statusCodeHasError(response: response) {
+                    throw error
                 }
 
                 return data
@@ -59,5 +62,14 @@ final class NetworkService: NetworkServiceType {
                 }
             }
             .eraseToAnyPublisher()
+    }
+
+    private func statusCodeHasError(response: URLResponse) -> NetworkError? {
+        guard let httpResponse = response as? HTTPURLResponse,
+              200...299 ~= httpResponse.statusCode
+        else {
+            return NetworkError.invalidStatusCode
+        }
+        return nil
     }
 }
