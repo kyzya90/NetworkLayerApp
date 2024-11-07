@@ -19,7 +19,9 @@ struct ContentView: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
+                .redacted(reason: .placeholder)
             Text("Hello, world!")
+                .redacted(reason: .placeholder)
         }
         .padding()
     }
@@ -27,6 +29,8 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     class VMStub: NetworkLayerViewModelType {
+        var state: NetworkLayerViewModelState = .noContent
+        
         func fetchData() {
         }
     }
