@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct ContentView: View {
+    private let viewModel: any NetworkLayerViewModelType
+
+    init(viewModel: any NetworkLayerViewModelType) {
+        self.viewModel = viewModel
+    }
+
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -19,6 +25,13 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    class VMStub: NetworkLayerViewModelType {
+        func fetchData() {
+        }
+    }
+
+    static var previews: some View {
+        ContentView(viewModel: VMStub())
+    }
 }
