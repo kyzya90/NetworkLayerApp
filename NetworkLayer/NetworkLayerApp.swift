@@ -11,7 +11,7 @@ import SwiftUI
 struct NetworkLayerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: NetworkLayerViewModel(networkService: NetworkService(urlSession: URLSession.shared)))
+            ContentView(viewModel: NetworkLayerViewModel(networkService: MainScreenNetworkService(networkService: NetworkService(urlSession: URLSession.shared))))
         }
     }
 }

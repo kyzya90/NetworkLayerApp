@@ -8,7 +8,12 @@
 import Foundation
 
 struct Header: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case title
+        case version
+        case imageUrl = "href"
+    }
     let title: String
-    let description: String
+    let version: String
     let imageUrl: String
 }

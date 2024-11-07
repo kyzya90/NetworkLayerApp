@@ -4,13 +4,13 @@
 //
 //  Created by Aleksandr Kazmin on 07.11.2024.
 //
-
+import Foundation
 import SwiftUI
 
-struct ContentView: View {
-    private let viewModel: any NetworkLayerViewModelType
+struct ContentView<T: NetworkLayerViewModelType>: View {
+    @ObservedObject private var viewModel: T
 
-    init(viewModel: any NetworkLayerViewModelType) {
+    init(viewModel: T) {
         self.viewModel = viewModel
     }
 
@@ -19,19 +19,27 @@ struct ContentView: View {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-                .redacted(reason: .placeholder)
             Text("Hello, world!")
-                .redacted(reason: .placeholder)
         }
+        .redacted(reason: $viewModel.state.wrappedValue == .loading ? .placeholder : [])
         .padding()
+        .onAppear(perform: {
+            viewModel.fetchData()
+        }).alert("Something went wrong",
+                 isPresented: Binding(get: {$viewModel.state.wrappedValue == .failed},
+                                      set: { _ in })) {
+            Button("OK", role: .cancel) {}
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     class VMStub: NetworkLayerViewModelType {
         var state: NetworkLayerViewModelState = .noContent
-        
+
         func fetchData() {
+
+            state = .loading
         }
     }
 

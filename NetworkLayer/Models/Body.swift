@@ -8,5 +8,21 @@
 import Foundation
 
 struct Body: Decodable {
-    let texts: [String]
+    enum CodingKeys: String, CodingKey {
+        case cars = "results"
+    }
+    let cars: [Car]
+}
+
+struct Car: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case title
+        case imageUrl = "href"
+        case description
+        case thumbnail
+    }
+    let title: String
+    let imageUrl: URL
+    let description: String
+    let thumbnail: URL
 }

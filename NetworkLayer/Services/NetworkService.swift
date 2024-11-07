@@ -6,6 +6,7 @@ enum NetworkError: Error {
     case invalidUrl
     case unknown
     case invalidStatusCode
+    case decode
 }
 
 protocol NetworkServiceType {
@@ -57,6 +58,8 @@ final class NetworkService: NetworkServiceType {
             .mapError { error in
                 if let networkError = error as? NetworkError {
                     return networkError
+                } else if error is DecodingError {
+                    return NetworkError.decode
                 } else {
                     return NetworkError.unknown
                 }
