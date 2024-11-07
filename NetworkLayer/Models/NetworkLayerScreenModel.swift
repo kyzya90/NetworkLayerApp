@@ -8,10 +8,10 @@
 import Foundation
 struct NetworkLayerScreenModel {
     let header: Header
-    let body: Body
+    let items: [aCellData]
 
-    init(header: Header, body: Body) {
+    init(header: Header, items: [aCellData]) {
         self.header = header
-        self.body = body
+        self.items = items
     }
 }

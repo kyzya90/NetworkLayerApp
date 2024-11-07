@@ -15,6 +15,7 @@ struct Body: Decodable {
 }
 
 struct Car: Decodable {
+
     enum CodingKeys: String, CodingKey {
         case title
         case imageUrl = "href"

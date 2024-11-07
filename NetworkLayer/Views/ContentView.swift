@@ -15,31 +15,39 @@ struct ContentView<T: NetworkLayerViewModelType>: View {
     }
 
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .redacted(reason: $viewModel.state.wrappedValue == .loading ? .placeholder : [])
-        .padding()
-        .onAppear(perform: {
-            viewModel.fetchData()
-        }).alert("Something went wrong",
-                 isPresented: Binding(get: {$viewModel.state.wrappedValue == .failed},
-                                      set: { _ in })) {
-            Button("OK", role: .cancel) {}
+        switch $viewModel.state.wrappedValue {
+        case .failed, .loading, .noContent:
+            VStack {
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundStyle(.tint)
+                Text("Hello, world!")
+            }
+            .redacted(reason: $viewModel.state.wrappedValue == .loading ? .placeholder : [])
+            .padding()
+            .onAppear(perform: {
+                viewModel.fetchData()
+            }).alert("Something went wrong",
+                     isPresented: Binding(get: {$viewModel.state.wrappedValue == .failed},
+                                          set: { _ in })) {
+                Button("OK", role: .cancel) {}
+            }
+        case .loaded(let model):
+            List {
+                ForEach(model.items) { car in
+                    aCell(cellData: car).listRowInsets(EdgeInsets())
+                }
+            }.listStyle(.automatic)
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     class VMStub: NetworkLayerViewModelType {
-        var state: NetworkLayerViewModelState = .noContent
+        var state: NetworkLayerViewModelState = .loaded(NetworkLayerScreenModel(header: Header(title: "", version: "", imageUrl: ""), items: [aCellData(title: "some title",
+                                                                                                                                                        description: "some description", imageUrl: URL(fileURLWithPath: ""))]))
 
         func fetchData() {
-
-            state = .loading
         }
     }
 

@@ -46,9 +46,13 @@ class NetworkLayerViewModel: NetworkLayerViewModelType {
             .receive(on: DispatchQueue.main)
             .sink { result in
                 switch result {
-                case .success(let items):
-                    self.state = .loaded(NetworkLayerScreenModel(header: items.0,
-                                                                 body: items.1))
+                case .success(let result):
+                    let items = result.1.cars.map { aCellData(title: $0.title,
+                                                              description: $0.description,
+                                                              imageUrl: $0.thumbnail) }
+                    let screenModel = NetworkLayerScreenModel(header: result.0,
+                                                              items: items)
+                    self.state = .loaded(screenModel)
                 case .failure(let error):
                     self.state = .failed
                 }
