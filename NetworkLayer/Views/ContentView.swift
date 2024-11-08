@@ -37,7 +37,7 @@ struct ContentView<T: NetworkLayerViewModelType>: View {
                 ForEach(model.items) { car in
                     aCell(cellData: car).listRowInsets(EdgeInsets())
                 }
-            }.listStyle(.automatic)
+            }.listStyle(.plain)
         }
     }
 }

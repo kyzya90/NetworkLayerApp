@@ -9,7 +9,7 @@ import SwiftUI
 
 private enum Constants {
     static let spacing: CGFloat = 8
-    static let borderHeiht: CGFloat = 1
+    static let borderHeight: CGFloat = 1
     static let imageSize: CGFloat = 88
 }
 
@@ -37,27 +37,39 @@ struct aCell: View {
     var body: some View {
         VStack(spacing: Constants.spacing) {
             Rectangle()
-                .frame(height: Constants.borderHeiht)
+                .frame(height: Constants.borderHeight)
                 .foregroundColor(.clear)
-            HStack {
+            HStack() {
+                Rectangle()
+                    .frame(width: 0, height: 0)
                 Circle().foregroundColor(.yellow)
                     .frame(width: Constants.imageSize)
                 VStack {
                     Text(cellData.title)
                         .font(.headline)
                         .bold()
+                        
                     Text(cellData.description)
                 }
+                Spacer()
             }
             Rectangle()
-                .frame(height: Constants.borderHeiht)
+                .frame(height: Constants.borderHeight)
                 .foregroundColor(.green)
         }
     }
 }
 
-#Preview(traits: .sizeThatFitsLayout) {
+#Preview("Big", traits: .sizeThatFitsLayout) {
     aCell(cellData: aCellData(title: "Some short but big text",
                               description: "some very long text which contains 5 lines fg kskekfka kek kdf gnnre mmmsd mamwmw me end",
                               imageUrl: URL(fileURLWithPath: "")))
+    
+}
+
+#Preview("Small", traits: .sizeThatFitsLayout) {
+    aCell(cellData: aCellData(title: "Some short but big text",
+                              description: "some very long ",
+                              imageUrl: URL(fileURLWithPath: "")))
+
 }
