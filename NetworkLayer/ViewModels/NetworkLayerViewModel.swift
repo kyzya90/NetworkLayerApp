@@ -49,7 +49,7 @@ class NetworkLayerViewModel: NetworkLayerViewModelType {
                 case .success(let result):
                     let items = result.1.cars.map { aCellData(title: $0.title,
                                                               description: $0.description,
-                                                              imageUrl: $0.thumbnail) }
+                                                              imageUrl: URL(string: "https://picsum.photos/200/300") ?? $0.thumbnail) }
                     let screenModel = NetworkLayerScreenModel(header: result.0,
                                                               items: items)
                     self.state = .loaded(screenModel)

@@ -42,14 +42,22 @@ struct aCell: View {
             HStack() {
                 Rectangle()
                     .frame(width: 0, height: 0)
-                Circle().foregroundColor(.yellow)
-                    .frame(width: Constants.imageSize)
+                AsyncImage(url: cellData.imageUrl) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                } placeholder: {
+                    ProgressView()
+                }.frame(width: Constants.imageSize,
+                        height: Constants.imageSize)
+
                 VStack {
                     Text(cellData.title)
                         .font(.headline)
                         .bold()
                         
                     Text(cellData.description)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
                 Spacer()
             }
