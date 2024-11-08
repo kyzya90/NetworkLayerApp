@@ -53,7 +53,7 @@ class NetworkLayerViewModel: NetworkLayerViewModelType {
                     let screenModel = NetworkLayerScreenModel(header: result.0,
                                                               items: items)
                     self.state = .loaded(screenModel)
-                case .failure(let error):
+                case .failure:
                     self.state = .failed
                 }
             }.store(in: &cancelBag)
