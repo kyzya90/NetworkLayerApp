@@ -50,6 +50,55 @@ class NetworkClientTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
+    func testResponsePublisherOnFailure() {
+        // GIVEN
+        let expectation = XCTestExpectation(description: "testResponsePublisherOnFailure exp")
+        let response = headerResponse(with: 404,
+                                      url: testHeaderUrl())
+        let data =  mockData(for: "Header")
+        setupRequestHandler(with: (response, data))
+
+        let header: AnyPublisher<Header, NetworkError> = networkService.responsePublisher(for: URLRequest(url: testHeaderUrl()))
+        // WHEN
+        header.sink { result in
+            // THEN
+            switch result {
+            case .success: XCTFail("Unreachable for this test")
+            case .failure: expectation.fulfill()
+            }
+        }.store(in: &cancelBag)
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testAsyncOnFailure() async {
+        // GIVEN
+        let response = headerResponse(with: 404,
+                                      url: testHeaderUrl())
+        let data =  mockData(for: "Header")
+        setupRequestHandler(with: (response, data))
+
+        do {
+            // WHEN
+            let _: Header = try await networkService.response(for: URLRequest(url: testHeaderUrl()))
+            // THEN
+            XCTFail("Unreachable for this test")
+        } catch {
+            XCTAssertNotNil(error)
+        }
+    }
+
+    func testAsyncOnSuccess() async {
+        // GIVEN
+        let response = headerResponse(url: testHeaderUrl())
+        let data =  mockData(for: "Header")
+        setupRequestHandler(with: (response, data))
+
+        do {
+            let _: Header = try await networkService.response(for: URLRequest(url: testHeaderUrl()))
+        } catch {
+            XCTFail("Unreachable for this test")
+        }
+    }
 
     private func testHeaderUrl() -> URL {
         let url = URL(string: "https://header.com")
